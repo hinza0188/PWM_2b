@@ -10,6 +10,7 @@
 
 #define IO_PORT_SIZE 1		/* Define port size to 1 */
 #define PA_ADDRESS 0x288	/* Digital I/O Port A: Register Address */
+#define PB_ADDRESS 0x289	/* Digital I/O Port B: Register Address */
 #define CTRL_ADDRESS 0x28B	/* Digital I/O Direction Control Register Address */
 
 // declare variables
@@ -19,27 +20,34 @@ void* func1( void* arg) {
 	return 1;
 }
 
-int main(int argc, char *argv[]) {
-	/* declare variables */
-	int permission_err =  ThreadCtl( _NTO_TCTL_IO, NULL );	/* give this thread root permission */
+void check_permission() {
 	uintptr_t ctrl_handle = mmap_device_io(IO_PORT_SIZE, CTRL_ADDRESS);		/* Get a handle to the Control register */
-	uintptr_t data_handle = mmap_device_io(IO_PORT_SIZE, DATA_ADDRESS);		/* Get a handle to the Data register */
+	uintptr_t pa_handle = mmap_device_io(IO_PORT_SIZE, PA_ADDRESS);			/* Get a handle to the Port A register */
+	uintptr_t pb_handle = mmap_device_io(IO_PORT_SIZE, PB_ADDRESS);			/* Get a handle to the Port B register */
 
-	/* get thread permission 1 */
-	if ( permission_err == -1) {
+	if ( ThreadCtl(_NTO_TCTL_IO, NULL) == -1) {
 		perror("Failed to get I/O access permission");
 		return 1;
 	}
-	/* get handler for control register */
+	/* get GPIO Port A register */
 	if(ctrlHandle == MAP_DEVICE_FAILED) {
 		perror("Failed to map control register");
 		return 2;
 	}
 	/* get handler for data register */
-	if(PA == MAP_DEVICE_FAILED) {
+	if(pa_handle == MAP_DEVICE_FAILED) {
 		perror("Failed to map Port register");
 		return 2;
 	}
+	/* get handler for data register */
+	if(pb_handle == MAP_DEVICE_FAILED) {
+		perror("Failed to map Port register");
+		return 2;
+	}
+}
+
+int main(int argc, char *argv[]) {
+	check_permission();
 
 	pthread_create( NULL, NULL, &func1, NULL);
 	sleep(10);
