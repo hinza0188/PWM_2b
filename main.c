@@ -7,6 +7,7 @@
 #include <sys/neutrino.h>	/* for ThreadCtl() in QNX */
 #include <sys/mman.h>		/* for mmap_device_io() */
 #include "pwm.h"
+#include "timer.h"
 
 #define IO_PORT_SIZE 1		/* Define port size to 1 */
 #define PA_ADDRESS 0x288	/* Digital I/O Port A: Register Address */
@@ -15,6 +16,7 @@
 
 // declare variables
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+int system_time = 0;
 
 void* func1( void* arg) {
 	return 1;
@@ -49,6 +51,7 @@ void check_permission() {
 int main(int argc, char *argv[]) {
 	check_permission();
 
+    pthread_create( NULL, NULL, &general_time, NULL);       // increment timer tick by every 1 ns
 	pthread_create( NULL, NULL, &func1, NULL);
 	sleep(10);
 
