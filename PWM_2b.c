@@ -12,19 +12,16 @@
 
 // declare variables
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-int system_time = 0;
-
-void* func1( void* arg) {
-	return 1;
-}
 
 
 int main(int argc, char *argv[]) {
     pwm_init();
     
     pthread_create( NULL, NULL, &general_time, NULL);       // increment timer tick by every 1 ns
+    pthread_create( NULL, NULL, pwm_pa, NULL);
+    pthread_create( NULL, NULL, pwm_pb, NULL);
 
-	sleep(10);
+	sleep(60);
 
 	return EXIT_SUCCESS;
 }
