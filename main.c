@@ -4,7 +4,7 @@
 #include <pthread.h>		/* for running thread */
 #include <time.h>			/* for general timer */
 #include <unistd.h>			/* for sleep */
-#include <sys/neutrino.h>	/* for ThreadCtl() */
+#include <sys/neutrino.h>	/* for ThreadCtl() in QNX */
 #include <sys/mman.h>		/* for mmap_device_io() */
 #include "pwm.h"
 
