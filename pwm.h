@@ -11,16 +11,15 @@
 #define CTRL_ADDRESS            0x28B		/* Digital I/O Direction Control Register Address */
 #define CONTROL_REGISTER_CONFIG 0x00
 #define PERIOD   				20000000;   /* 2 * 10^7 nano second = 20ms */
-#define P0						388000;		/* position 0, 0.388ms of servo duty */
-#define P1						750000;
-#define P2						1100000;
-#define P3						1450000;
-#define P4						1850000;
-#define P5						2140000;	/* position 5, 2.140ms of servo duty */
-
+#define P0 (388000)
+#define P1 (720000)
+#define P2 (1100000)
+#define P3 (1450000)
+#define P4 (1850000)
+#define P5 (2140000)
 
 void check_permission(void);
-int pwm_init(void);
+int PWM_Init(void);
 
 void* pwm_pa(void*);
 void* pwm_pb(void*);

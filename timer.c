@@ -8,9 +8,10 @@
 #include <time.h>
 #include <sys/netmgr.h>
 #include <sys/neutrino.h>
-
 #include <sys/mman.h>		/* for mmap_device_io() */
-#include <timer.h>
+#include "timer.h"
+#include "pwm.h"
+#include "servoManagement.h"
 
 
 /* handling pulse as timer's message */
@@ -48,7 +49,8 @@ void* general_time(void* arg) {
         if (rcvid == 0) { /* pulse detected from the timer */
             if (msg.pulse.code == MY_PULSE) {
                 // 100 MS has been ticked!
-            	printf("100ms has been ticked!\n");
+            	operate(&servo0);
+				operate(&servo1);
             }
        }
     }

@@ -5,8 +5,9 @@
 #include <sys/mman.h>		/* for mmap_device_io() */
 #include <hw/inout.h>     	/* for in*() and out*() functions */
 #include "pwm.h"
+#include "servoManagement.h"
 
-int pwm_init(void) {
+int PWM_Init(void) {
 	uintptr_t ctrl_handle = mmap_device_io(IO_PORT_SIZE, CTRL_ADDRESS);		/* Get a handle to the Control register */
 	uintptr_t pa_handle = mmap_device_io(IO_PORT_SIZE, PA_ADDRESS);			/* Get a handle to the Port A register */
 	uintptr_t pb_handle = mmap_device_io(IO_PORT_SIZE, PB_ADDRESS);			/* Get a handle to the Port B register */
@@ -39,10 +40,12 @@ int pwm_init(void) {
 void* pwm_pa(void* arg) {
 	uintptr_t pa_handle = mmap_device_io(IO_PORT_SIZE, PA_ADDRESS);			/* Get a handle to the Port A register */
 	struct timespec pwm_sleep, end_time;
+	Servo* e = (Servo*)arg;
+	int pos;
 	int time;
-	int pos = 0;
 
 	while (1) {
+		pos = e->signal;
 		switch (pos) {
 			case 0:
 				time = P0;
@@ -62,6 +65,8 @@ void* pwm_pa(void* arg) {
 			case 5:
 				time = P5;
 				break;
+			default:
+				break;
 		}
 		out8( pa_handle, (uint8_t)0x01 );	// set high
 		pwm_sleep.tv_nsec = time;
@@ -77,10 +82,12 @@ void* pwm_pa(void* arg) {
 void* pwm_pb(void* arg) {
 	uintptr_t pb_handle = mmap_device_io(IO_PORT_SIZE, PB_ADDRESS);			/* Get a handle to the Port A register */
 	struct timespec pwm_sleep, end_time;
+	Servo* e = (Servo*)arg;
+	int pos;
 	int time;
-	int pos = 5;
 
 	while (1) {
+		pos = e->signal;
 		switch (pos) {
 			case 0:
 				time = P0;
