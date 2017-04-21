@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
 	while(1) {
 		printf("Enter the command: ");
 		scanf("%s", str);
+		printf("Input taken: %s\n", str);
 		// use str to run recipe command here
-		printf("Input Taken: %s\n", str);
 		servo_cmd(str, &servo0, &servo1);
 	}
 

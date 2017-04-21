@@ -109,7 +109,7 @@ void operate (Servo* e) {
 				break;
 
 			 case END_LOOP  :
-				servo_end_Loop(e);
+				servo_end_loop(e);
 				break;
 
 			 case RECIPE_END  :
@@ -160,7 +160,7 @@ void servo_loop(Servo* e, uint8_t val) {
 /*
 	Recipe function going back on the start of the loop if the loop_index isn't equal to 0
 */
-void servo_end_Loop(Servo* e) {
+void servo_end_loop(Servo* e) {
 	if(e->loop_id != 0) {
 		e->recipe_id = e->s_loop_id;
 		e->loop_id--;
