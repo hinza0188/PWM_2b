@@ -1,5 +1,8 @@
 #include <stdint.h>			/* for uintptr_t */
 
+#ifndef __SERVO_MANAGEMENT__
+#define __SERVO_MANAGEMENT__
+
 #define MOV (0x20)
 #define WAIT (0x40)
 #define LOOP (0x80)
@@ -44,3 +47,5 @@ void Pend(Servo* e);
 int left(Servo* e);
 int right(Servo* e);
 void Restart(Servo* e);
+
+#endif //__SERVO_MANAGEMENT__

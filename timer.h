@@ -5,6 +5,9 @@
  *      Author: yxa8247
  */
 
+#ifndef __TIMER__
+#define __TIMER__
+
 // used for timer pulse
 #define MY_PULSE   	_PULSE_CODE_MINAVAIL
 #define HMS   		100000000;      // 10^8 nano second = 100ms
@@ -13,4 +16,7 @@
 extern int system_time;
 
 void* general_time(void*);
+
+#ifndef __TIMER__
+#define __TIMER__
 

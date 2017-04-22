@@ -1,10 +1,9 @@
-#ifndef RECIPE_H
-#define RECIPE_H
+#ifndef __RECIPE__
+#define __RECIPE__
 
 #include "servoManagement.h"
-
-#endif
 
 void Recipe1(Servo*);
 void Recipe2(Servo*);
 
+#endif //__RECIPE__

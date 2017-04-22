@@ -8,14 +8,15 @@
 #include "servoManagement.h"
 
 int PWM_Init(void) {
+	if ( ThreadCtl(_NTO_TCTL_IO, NULL) == -1) {
+		perror("Failed to get I/O access permission");
+		return 1;
+	}
+
 	uintptr_t ctrl_handle = mmap_device_io(IO_PORT_SIZE, CTRL_ADDRESS);		/* Get a handle to the Control register */
 	uintptr_t pa_handle = mmap_device_io(IO_PORT_SIZE, PA_ADDRESS);			/* Get a handle to the Port A register */
 	uintptr_t pb_handle = mmap_device_io(IO_PORT_SIZE, PB_ADDRESS);			/* Get a handle to the Port B register */
 
-    if ( ThreadCtl(_NTO_TCTL_IO, NULL) == -1) {
-        perror("Failed to get I/O access permission");
-        return 1;
-    }
     /* get GPIO Port A register */
     if(ctrl_handle == MAP_DEVICE_FAILED) {
         perror("Failed to map control register");
@@ -33,6 +34,12 @@ int PWM_Init(void) {
     }
 
     out8(ctrl_handle, CONTROL_REGISTER_CONFIG);      // set PORTs into output mode
+
+
+//    out8( pa_handle, (uint8_t)0x01 );	// set high
+//    out8( pb_handle, (uint8_t)0x01 );	// set high
+//    while(1);
+
     return 0;
 
 }
