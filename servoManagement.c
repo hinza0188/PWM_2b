@@ -33,6 +33,12 @@ void servo_cmd(char cmd[], Servo* servo0, Servo* servo1) {
 		case 'n':
 		case 'N':
 			break;
+		case 'j':
+		case 'J':
+			Jump(servo0);
+		case 'p':
+		case 'P':
+			Pend(servo0);
 		default:
 			break;
 	}
@@ -61,6 +67,12 @@ void servo_cmd(char cmd[], Servo* servo0, Servo* servo1) {
 		case 'n':
 		case 'N':
 			break;
+		case 'j':
+		case 'J':
+			Jump(servo1);
+		case 'p':
+		case 'P':
+			Pend(servo1);
 		default:
 			break;
 	}
@@ -96,29 +108,33 @@ void operate (Servo* e) {
         }
 		else {
 			switch(e->recipe[e->recipe_id] & 0xE0) {
-			 case MOV	:
-				servo_move(e, e->recipe[e->recipe_id] & 0x1F);
-				break;
+				case MOV	:
+					servo_move(e, e->recipe[e->recipe_id] & 0x1F);
+					break;
 
-			 case WAIT  :
-				servo_wait(e, e->recipe[e->recipe_id] & 0x1F);
-				break;
+				case WAIT  :
+					servo_wait(e, e->recipe[e->recipe_id] & 0x1F);
+					break;
 
-			 case LOOP  :
-				servo_loop(e, e->recipe[e->recipe_id] & 0x1F);
-				break;
+				 case LOOP  :
+					servo_loop(e, e->recipe[e->recipe_id] & 0x1F);
+					break;
 
-			 case END_LOOP  :
-				servo_end_loop(e);
-				break;
+				 case END_LOOP  :
+					servo_end_loop(e);
+					break;
 
-			 case RECIPE_END  :
-				Recipe_End(e);
-				break;
+				 case RECIPE_END  :
+					Recipe_End(e);
+					break;
 
-			 case JUMP :
-				Jump(e, e->recipe[e->recipe_id] & 0x1F);
-				break;
+				 case JUMP :
+					Jump(e, e->recipe[e->recipe_id] & 0x1F);
+					break;
+
+				 case PEND :
+					 Pend(e);
+					 break;
 
 			}
 			e->recipe_id++;
