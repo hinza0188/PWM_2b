@@ -7,40 +7,43 @@
 #include "pwm.h"
 #include "servoManagement.h"
 
-int PWM_Init(void) {
+int get_permission(void) {
 	if ( ThreadCtl(_NTO_TCTL_IO, NULL) == -1) {
 		perror("Failed to get I/O access permission");
 		return 1;
+	} else return 0;
+}
+
+int check_permission(uintptr_t ctrl, uintptr_t pa, uintptr_t pb) {
+
+	/* get GPIO Port A register */
+	if(ctrl == MAP_DEVICE_FAILED) {
+		perror("Failed to map control register");
+		return 2;
 	}
+	/* get handler for data register */
+	if(pa == MAP_DEVICE_FAILED) {
+		perror("Failed to map Port A register");
+		return 2;
+	}
+	/* get handler for data register */
+	if(pb == MAP_DEVICE_FAILED) {
+		perror("Failed to map Port B register");
+		return 2;
+	}
+	return 0;
+}
+
+void PWM_Init(void) {
+	if (!get_permission()) {return;}
 
 	uintptr_t ctrl_handle = mmap_device_io(IO_PORT_SIZE, CTRL_ADDRESS);		/* Get a handle to the Control register */
 	uintptr_t pa_handle = mmap_device_io(IO_PORT_SIZE, PA_ADDRESS);			/* Get a handle to the Port A register */
 	uintptr_t pb_handle = mmap_device_io(IO_PORT_SIZE, PB_ADDRESS);			/* Get a handle to the Port B register */
 
-    /* get GPIO Port A register */
-    if(ctrl_handle == MAP_DEVICE_FAILED) {
-        perror("Failed to map control register");
-        return 2;
-    }
-    /* get handler for data register */
-    if(pa_handle == MAP_DEVICE_FAILED) {
-        perror("Failed to map Port A register");
-        return 2;
-    }
-    /* get handler for data register */
-    if(pb_handle == MAP_DEVICE_FAILED) {
-        perror("Failed to map Port B register");
-        return 2;
-    }
+	if (!check_permission(ctrl_handle, pa_handle, pb_handle)) {return;}
 
     out8(ctrl_handle, CONTROL_REGISTER_CONFIG);      // set PORTs into output mode
-
-
-//    out8( pa_handle, (uint8_t)0x01 );	// set high
-//    out8( pb_handle, (uint8_t)0x01 );	// set high
-//    while(1);
-
-    return 0;
 
 }
 
@@ -80,7 +83,7 @@ void* pwm_pa(void* arg) {
 		nanosleep(&pwm_sleep, &end_time);
 
 		out8( pa_handle, (uint8_t)0x00);	// set low
-		pwm_sleep.tv_nsec = PERIOD - time;
+		pwm_sleep.tv_nsec = 20000000 - time;
 		nanosleep(&pwm_sleep, &end_time);
 	}
 	return 0;
@@ -120,7 +123,7 @@ void* pwm_pb(void* arg) {
 		nanosleep(&pwm_sleep, &end_time);
 
 		out8( pb_handle, (uint8_t)0x00);	// set low
-		pwm_sleep.tv_nsec = PERIOD - time;
+		pwm_sleep.tv_nsec = 20000000 - time;
 		nanosleep(&pwm_sleep, &end_time);
 	}
 	return 0;

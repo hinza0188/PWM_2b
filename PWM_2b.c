@@ -24,11 +24,12 @@ int main(int argc, char *argv[]) {
 	/* Declare variables */
 	char str[2];
 
+	/*
 	struct _clockperiod clkper;
 	clkper.nsec = 10000;
 	clkper.fract = 0;
 	ClockPeriod(CLOCK_REALTIME, &clkper, NULL, 0);
-
+	*/
     /* Initialize threads */
 	PWM_Init();
 	/* Initialize Servo 0 with recipe 2 @ position_0 */

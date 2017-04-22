@@ -197,6 +197,7 @@ void Pend(Servo* e) {
 int left(Servo* e) {
 	if(e->present_location != 5 && (e->pause || e->recipe_finished)) {
 		e->signal++;
+		e->present_location++;
 		return 0;
 	}
 	else return -1;
@@ -208,6 +209,7 @@ int left(Servo* e) {
 int right(Servo* e) {
 	if(e->present_location != 0 && (e->pause || e->recipe_finished)) {
 		e->signal--;
+		e->present_location--;
 		return 0;
 	}
 	else return -1;

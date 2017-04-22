@@ -17,6 +17,4 @@ extern int system_time;
 
 void* general_time(void*);
 
-#ifndef __TIMER__
-#define __TIMER__
-
+#endif

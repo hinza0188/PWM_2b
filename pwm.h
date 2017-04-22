@@ -21,8 +21,9 @@
 #define P4 (1850000)
 #define P5 (2140000)
 
-void check_permission(void);
-int PWM_Init(void);
+int get_permission(void);
+int check_permission(uintptr_t ctrl, uintptr_t pa, uintptr_t pb);
+void PWM_Init(void);
 
 void* pwm_pa(void*);
 void* pwm_pb(void*);
